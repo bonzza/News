@@ -16,7 +16,7 @@ struct ArticlesResponse: Mappable {
     var status: Bool?
     
     init?(map: Map) {
-        
+        mapping(map: map)
     }
     
     mutating func mapping(map: Map) {
