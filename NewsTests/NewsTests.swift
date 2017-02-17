@@ -21,9 +21,14 @@ class NewsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testArticleSuccess() {
+        
+        let exp = expectation(description: "Load response")
+        NewsAPI.request(path: "", mappableType: ArticlesResponse.self) { (obj, error) in
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+        
     }
     
     func testPerformanceExample() {

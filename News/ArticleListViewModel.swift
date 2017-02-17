@@ -18,16 +18,17 @@ class ArticleListViewModel {
     
     init() {
         
-        _ = source.observeNext { (sourceEnum) in
-            let parameters: Parameters = [
-                "source" : sourceEnum?.rawValue ?? ""
-            ]
-            NewsAPI.request(NewsURL.articles,mappableType: ArticlesResponse.self, parameters: parameters, completeBlock: { [unowned self] (obj: Mappable?, error: NSError?) in
-                guard let articlesResponse = obj as? ArticlesResponse else {
-                    return
-                }
-                self.articles.value = articlesResponse.articles
-            })
-        }
+    }
+    
+    func load(source: NewsSource) {
+        let parameters: Parameters = [
+            "source" : source.rawValue
+        ]
+        NewsAPI.request(NewsURL.articles,mappableType: ArticlesResponse.self, parameters: parameters, completeBlock: { [unowned self] (obj: Mappable?, error: NSError?) in
+            guard let articlesResponse = obj as? ArticlesResponse else {
+                return
+            }
+            self.articles.value = articlesResponse.articles
+        })
     }
 }

@@ -1,0 +1,47 @@
+{
+"status": "ok",
+"source": "techcrunch",
+"sortBy": "top",
+-"articles": [
+-{
+"author": "Khaled \"Tito\" Hamze",
+"title": "Crunch Report",
+"description": "Your daily roundup of the biggest TechCrunch stories and startup news.",
+"url": "https://techcrunch.com/video/crunchreport/",
+"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2015/03/tccrshowogo.jpg?w=500&h=200&crop=1",
+"publishedAt": "2017-02-16T03:00:33Z"
+},
+-{
+"author": "Josh Constine",
+"title": "Mark Zuckerberg’s humanitarian manifesto",
+"description": "\"Are we building the world we all want?\" That's a question often reserved for the lips of presidents and religious leaders, and too rarely asked by CEOs. But..",
+"url": "https://techcrunch.com/2017/02/16/building-the-world-we-all-want/",
+"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2017/02/gettyimages-512269968.jpg?w=764&h=400&crop=1",
+"publishedAt": "2017-02-16T19:58:56Z"
+},
+-{
+"author": "Matthew Lynley",
+"title": "Why Snap would lowball its IPO valuation",
+"description": "The short answer for why Snap lowballed its initial valuation for its initial public offering is that it probably won't be that low for long. Normally these..",
+"url": "https://techcrunch.com/2017/02/16/why-snap-would-lowball-its-ipo-valuation/",
+"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2015/05/456877564.jpg?w=764&h=400&crop=1",
+"publishedAt": "2017-02-16T19:48:09Z"
+},
+-{
+"author": "John Biggs",
+"title": "This must be the year of mobile security",
+"description": "If I gave you my phone right you'd be able to figure out a lot of stuff about me. If I didn't unlock it you'd see some of the news I read, the apps I use, and..",
+"url": "https://techcrunch.com/2017/02/16/this-must-the-year-of-mobile-security/",
+"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2016/08/cyber-security-data-phone1.png?w=764&h=400&crop=1",
+"publishedAt": "2017-02-16T18:07:03Z"
+},
+-{
+"author": "Josh Constine",
+"title": "Snapchat beyond Stories: Be the HBO of mobile",
+"description": "Snap is three things, and everyone else is two of them. There are plenty of chat apps, and Stories is being copied successfully by Instagram, with more..",
+"url": "https://techcrunch.com/2017/02/16/snapchat-shows/",
+"urlToImage": "https://tctechcrunch2011.files.wordpress.com/2017/02/hbo-snap.png?w=764&h=400&crop=1",
+"publishedAt": "2017-02-16T16:40:09Z"
+}
+]
+}

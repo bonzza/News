@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import ObjectMapper
+import SwiftyJSON
 
 
 public typealias ApiCompletionBlock = (_ result: Mappable?, _ error: NSError?) -> Void
@@ -22,8 +23,7 @@ class NewsAPI: NSObject {
                         method: HTTPMethod = .get,
                         mappableType: Mappable.Type,
                         parameters: Parameters? = nil,
-                        completeBlock: @escaping ApiCompletionBlock
-        )
+                        completeBlock: @escaping ApiCompletionBlock)
     {
         /* Add api key for all request */
         var param = parameters ?? [String:AnyObject]()
@@ -44,5 +44,33 @@ class NewsAPI: NSObject {
                 }
                 
         }
+    }
+}
+
+/* For Test */
+extension NewsAPI {
+    
+    static func request(path: String,
+                        mappableType: Mappable.Type,
+                        completeBlock: @escaping ApiCompletionBlock)
+    {
+        if let path = Bundle.main.path(forResource: "acticles_ok", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
+                let jsonObj = JSON(data: data)
+                if jsonObj != JSON.null {
+                    let obj = mappableType.init(map: Map(mappingType: .fromJSON, JSON: jsonObj.dictionary!))
+                    completeBlock(obj, nil)
+                    print("jsonData:\(jsonObj)")
+                } else {
+                    print("Could not get json from file, make sure that file contains valid json.")
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        } else {
+            print("Invalid filename/path.")
+        }
+        
     }
 }

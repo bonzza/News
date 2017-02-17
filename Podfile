@@ -8,13 +8,17 @@ target 'News' do
   pod 'Kingfisher'
   pod 'Alamofire'
   pod 'ObjectMapper'
-
+  pod 'SwiftyJSON'
 
   # Pods for News
 
   target 'NewsTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Bond'
+    pod 'Alamofire'
+    pod 'ObjectMapper'
+    pod 'SwiftyJSON'
   end
 
 end

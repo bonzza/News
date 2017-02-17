@@ -8,11 +8,14 @@
 
 import UIKit
 import Bond
+import Kingfisher
 
 
-private let reuseIdentifier = "ArticleCell"
+
 
 class ArticleListCollectionViewController: UICollectionViewController {
+    
+    private let reuseIdentifier = "ArticleCell"
 
     var viewModel = ArticleListViewModel()
     
@@ -23,7 +26,8 @@ class ArticleListCollectionViewController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        bindind()
 
         // Do any additional setup after loading the view.
     }
@@ -33,34 +37,45 @@ class ArticleListCollectionViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
+        // #warning Incomplete implementation, reกturn the number of items
         return viewModel.articles.value?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        
-        // Configure the cell
-    
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AricleCollectionViewCell,
+            let article = self.viewModel.articles.value?[indexPath.item]
+            else {
+            return UICollectionViewCell()
+        }
+        cell.titleLabel.text = article.title
+        cell.descLabel.text = article.description
+        if let imageString = article.image, let url = URL(string: imageString) {
+            cell.imageView.kf.setImage(with: url)
+        }
+
         return cell
+    }
+}
+
+extension ArticleListCollectionViewController {
+    
+    func bindind() {
+        
+        viewModel.load(source: .IGN)
+        
+        _ = viewModel.articles.observeNext { [unowned self] (articles) in
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+        }
     }
 }
