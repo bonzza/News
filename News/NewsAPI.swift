@@ -63,6 +63,7 @@ extension NewsAPI {
                     completeBlock(obj, nil)
                     print("jsonData:\(jsonObj)")
                 } else {
+                    completeBlock(nil, nil)
                     print("Could not get json from file, make sure that file contains valid json.")
                 }
             } catch let error {
