@@ -21,31 +21,24 @@ class NewsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testArticleSuccess() {
+    func testArticleViewModel() {
         
         let exp = expectation(description: "Load response")
-        NewsAPI.request(path: "", mappableType: ArticlesResponse.self) { (obj, error) in
-            guard let articalsResponse = obj as? ArticlesResponse else {
-                XCTFail()
-                return
-            }
-            XCTAssertEqual(articalsResponse.articles?.count, 5)
-            XCTAssertEqual(articalsResponse.articles?[0].title, "Crunch Report")
-            XCTAssertEqual(articalsResponse.articles?[0].description, "Your daily roundup of the biggest TechCrunch stories and startup news.")
-            XCTAssertEqual(articalsResponse.articles?[0].url, "https://techcrunch.com/video/crunchreport/")
-            XCTAssertEqual(articalsResponse.articles?[0].image, "https://tctechcrunch2011.files.wordpress.com/2015/03/tccrshowogo.jpg?w=500&h=200&crop=1")
-//            XCTAssert(articalsResponse?.articles?[0].date == "https://tctechcrunch2011.files.wordpress.com/2015/03/tccrshowogo.jpg?w=500&h=200&crop=1")
-            exp.fulfill()
+        let viewModel = ArticleListViewModel()
+        viewModel.load(source: .IGN)
+        _ = viewModel.articles
+            .filter(include: { $0!.count > 0 })
+            .observeNext { (articles) in
+                XCTAssertNotNil(articles?.first)
+                XCTAssertNotNil(articles?.first?.title)
+                XCTAssertNotNil(articles?.first?.description)
+                XCTAssertNotNil(articles?.first?.author)
+                XCTAssertNotNil(articles?.first?.date)
+                XCTAssertNotNil(articles?.first?.image)
+                XCTAssertNotNil(articles?.first?.url)
+                exp.fulfill()
         }
         waitForExpectations(timeout: 10, handler: nil)
-        
+            
     }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }

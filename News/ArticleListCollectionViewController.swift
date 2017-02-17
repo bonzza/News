@@ -9,8 +9,8 @@
 import UIKit
 import Bond
 import Kingfisher
-
-
+import DZNEmptyDataSet
+import MBProgressHUD
 
 
 class ArticleListCollectionViewController: UICollectionViewController {
@@ -21,15 +21,8 @@ class ArticleListCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-//        collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        bindind()
-
-        // Do any additional setup after loading the view.
+        collectionView?.emptyDataSetSource = self
+        binding()
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,7 +31,6 @@ class ArticleListCollectionViewController: UICollectionViewController {
     }
 
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -51,7 +43,7 @@ class ArticleListCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AricleCollectionViewCell,
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ArticleCollectionViewCell,
             let article = self.viewModel.articles.value?[indexPath.item]
             else {
             return UICollectionViewCell()
@@ -59,23 +51,51 @@ class ArticleListCollectionViewController: UICollectionViewController {
         cell.titleLabel.text = article.title
         cell.descLabel.text = article.description
         if let imageString = article.image, let url = URL(string: imageString) {
+            cell.imageView.kf.indicatorType = .activity
             cell.imageView.kf.setImage(with: url)
         }
-
         return cell
+    }
+}
+
+extension ArticleListCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let col = (collectionView.bounds.size.width / 300).rounded()
+        let side = (collectionView.bounds.size.width / col) - 20
+        
+        return CGSize(width: side, height: side)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14)
     }
 }
 
 extension ArticleListCollectionViewController {
     
-    func bindind() {
-        
+    func binding() {
         viewModel.load(source: .IGN)
-        
-        _ = viewModel.articles.observeNext { [unowned self] (articles) in
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        _ = viewModel.articles
+            .filter(include: { $0?.count != 0 })
+            .observeNext { [unowned self] (articles) in
+            self.collectionView?.reloadData()
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+}
+
+extension ArticleListCollectionViewController: DZNEmptyDataSetSource {
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "No Data"
+        let attrs = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)]
+        return NSAttributedString(string: str, attributes: attrs)
+    }
+    
 }

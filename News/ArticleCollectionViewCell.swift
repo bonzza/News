@@ -1,5 +1,5 @@
 //
-//  AricleCollectionViewCell.swift
+//  ArticleCollectionViewCell.swift
 //  News
 //
 //  Created by Mac on 2/17/17.
@@ -9,7 +9,7 @@
 import UIKit
 
 
-class AricleCollectionViewCell: UICollectionViewCell {
+class ArticleCollectionViewCell: UICollectionViewCell {
     
     
     @IBOutlet weak var imageView: UIImageView!

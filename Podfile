@@ -8,7 +8,8 @@ target 'News' do
   pod 'Kingfisher'
   pod 'Alamofire'
   pod 'ObjectMapper'
-  pod 'SwiftyJSON'
+  pod 'DZNEmptyDataSet'
+  pod 'MBProgressHUD'
 
   # Pods for News
 
@@ -18,7 +19,6 @@ target 'News' do
     pod 'Bond'
     pod 'Alamofire'
     pod 'ObjectMapper'
-    pod 'SwiftyJSON'
   end
 
 end
