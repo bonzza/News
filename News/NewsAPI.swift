@@ -11,9 +11,9 @@ import Alamofire
 import ObjectMapper
 
 
-public typealias ApiCompletionBlock = (_ result: Mappable?, _ error: NSError?) -> Void
-
 class NewsAPI: NSObject {
+    
+    public typealias ApiCompletionBlock = (_ result: Result) -> Void
     
     private static let apiKey = "810f9b2d3f4f4193b30e660db996f9d8"
     
@@ -34,14 +34,13 @@ class NewsAPI: NSObject {
                 switch response.result {
                 case .success(let responseJSON):
                     if let obj = mappableType.init(map: Map(mappingType: .fromJSON, JSON: responseJSON as! [String : Any])) {
-                        completeBlock(obj, nil)
+                        completeBlock(Result.Success(obj: obj))
                     } else {
-                        completeBlock(nil, nil)
+                        completeBlock(Result.Error(error: NewsError.ObjectMapping(responseJSON)))
                     }
                 case .failure(let err):
-                    print(err)
+                    completeBlock(Result.Error(error: NewsError.Response(err)))
                 }
-                
         }
     }
 }

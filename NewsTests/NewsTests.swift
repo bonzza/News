@@ -21,24 +21,66 @@ class NewsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testArticleViewModel() {
+    func testArticleViewModelIGN() {
         
         let exp = expectation(description: "Load response")
         let viewModel = ArticleListViewModel()
-        viewModel.load(source: .IGN)
+        viewModel.load(source: .Engadget)
         _ = viewModel.articles
-            .filter(include: { $0!.count > 0 })
+            .ignoreNil()
+            .filter(include: { $0.count > 0 })
             .observeNext { (articles) in
-                XCTAssertNotNil(articles?.first)
-                XCTAssertNotNil(articles?.first?.title)
-                XCTAssertNotNil(articles?.first?.description)
-                XCTAssertNotNil(articles?.first?.author)
-                XCTAssertNotNil(articles?.first?.date)
-                XCTAssertNotNil(articles?.first?.image)
-                XCTAssertNotNil(articles?.first?.url)
+                
+                XCTAssertNotNil(articles.first)
+                XCTAssertNotNil(articles.first?.title)
+                XCTAssertNotNil(articles.first?.description)
+                XCTAssertNotNil(articles.first?.image)
+                XCTAssertNotNil(articles.first?.url)
+                
+                /* Oprional */
+                // XCTAssertNotNil(articles.first?.author)
+                // XCTAssertNotNil(articles.first?.date)
+                
                 exp.fulfill()
         }
         waitForExpectations(timeout: 10, handler: nil)
-            
+    }
+    
+    func testArticleViewModelNationalGeographic() {
+        
+        let exp = expectation(description: "Load response")
+        let viewModel = ArticleListViewModel()
+        viewModel.load(source: .NationalGeographic)
+        _ = viewModel.articles
+            .ignoreNil()
+            .filter(include: { $0.count > 0 })
+            .observeNext { (articles) in
+                
+                XCTAssertNotNil(articles.first)
+                XCTAssertNotNil(articles.first?.title)
+                XCTAssertNotNil(articles.first?.description)
+                XCTAssertNotNil(articles.first?.image)
+                XCTAssertNotNil(articles.first?.url)
+                
+                /* Oprional */
+                // XCTAssertNotNil(articles.first?.author)
+                // XCTAssertNotNil(articles.first?.date)
+                
+                exp.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testArticleViewModelErrorResponse() {
+        
+        let exp = expectation(description: "Load response")
+        let viewModel = ArticleListViewModel()
+        viewModel.load(source: .ErrorTest)
+        _ = viewModel.error
+            .observeNext { (articles) in
+                
+                exp.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }

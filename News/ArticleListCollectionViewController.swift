@@ -8,7 +8,6 @@
 
 import UIKit
 import Bond
-import Kingfisher
 import DZNEmptyDataSet
 import MBProgressHUD
 
@@ -24,20 +23,17 @@ class ArticleListCollectionViewController: UICollectionViewController {
         collectionView?.emptyDataSetSource = self
         binding()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
 
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, reกturn the number of items
         return viewModel.articles.value?.count ?? 0
     }
 
@@ -48,12 +44,7 @@ class ArticleListCollectionViewController: UICollectionViewController {
             else {
             return UICollectionViewCell()
         }
-        cell.titleLabel.text = article.title
-        cell.descLabel.text = article.description
-        if let imageString = article.image, let url = URL(string: imageString) {
-            cell.imageView.kf.indicatorType = .activity
-            cell.imageView.kf.setImage(with: url)
-        }
+        cell.render(article: article)
         return cell
     }
 }
@@ -75,18 +66,15 @@ extension ArticleListCollectionViewController: UICollectionViewDelegateFlowLayou
 extension ArticleListCollectionViewController {
     
     func binding() {
-        viewModel.load(source: .IGN)
+        viewModel.load(source: .Engadget)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         _ = viewModel.articles
-            .filter(include: { $0?.count != 0 })
+            .ignoreNil()
+            .filter(include: { $0.count != 0 })
             .observeNext { [unowned self] (articles) in
             self.collectionView?.reloadData()
             MBProgressHUD.hide(for: self.view, animated: true)
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        collectionView?.collectionViewLayout.invalidateLayout()
     }
 }
 

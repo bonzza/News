@@ -13,5 +13,7 @@ enum NewsSource: String {
     
     case IGN = "ign"
     case NationalGeographic = "national-geographic"
+    case Engadget = "engadget"
+    case ErrorTest = ""
     
 }
